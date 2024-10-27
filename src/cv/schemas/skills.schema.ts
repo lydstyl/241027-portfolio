@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
 @Schema({ collection: 'skill' }) // Specify the collection name
-export class CV extends Document {
+export class Skill extends Document {
   @Prop()
   name: string;
 
@@ -28,4 +28,4 @@ export class CV extends Document {
   updated_by: string; // remove this ?
 }
 
-export const CVSchema = SchemaFactory.createForClass(CV);
+export const SkillSchema = SchemaFactory.createForClass(Skill);

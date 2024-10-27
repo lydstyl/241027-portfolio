@@ -1,29 +1,23 @@
 import { Controller, Get } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { InjectConnection } from '@nestjs/mongoose';
-import { Model, Connection } from 'mongoose';
-import { CV } from './schemas/cv.schema';
+import { Model } from 'mongoose';
+import { Skill } from './schemas/skills.schema';
+import { Experience } from './schemas/experiences.schema';
 
 @Controller('api')
 export class CvController {
   constructor(
-    @InjectModel(CV.name) private cvModel: Model<CV>,
-    @InjectConnection() private connection: Connection,
+    @InjectModel(Skill.name) private cvModel: Model<Skill>,
+    @InjectModel(Experience.name) private experienceModel: Model<Experience>,
   ) {}
 
   @Get('cv')
   async getCVData() {
-    const db = this.connection.db;
-    const collection = db.collection('skill');
-
-    // Let's see what's in the collection with a detailed query
-    const skills = await collection
-      .find({})
-      .project({ name: 1, score: 1, _id: 0 })
-      .toArray();
-    console.log('Collection content:', await collection.countDocuments());
-    console.log('Sample document:', await collection.findOne({}));
-
-    return skills;
+    const skills = await this.cvModel.find().exec();
+    const experiences = await this.experienceModel
+      .find()
+      .sort({ begin: -1 })
+      .exec();
+    return { skills, experiences };
   }
 }

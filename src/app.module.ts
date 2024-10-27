@@ -9,7 +9,7 @@ dotenv.config();
 @Module({
   imports: [
     MongooseModule.forRoot(process.env.MONGODB_URI, {
-      dbName: '210119-gabriel-brun-resume-backend', // Add the name of your database here
+      dbName: '210119-gabriel-brun-resume-backend',
     }),
     PortfolioModule,
     CvModule,
